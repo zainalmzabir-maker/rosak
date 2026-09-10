@@ -1,1 +1,633 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Pelaporan Kerosakan - SMK Kamarul Ariffin</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS Khas untuk Cetakan A4 1 Muka Surat */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printArea, #printArea * {
+        visibility: visible !important;
+      }
+      #printArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 8mm 12mm !important;
+        background: white !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 6mm 10mm;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
+  <!-- KONFIGURASI SISTEM -->
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuns4-zeELhDaMu7jqVVtPqRvVUHweBgsts867XF-3fFh-axl-vBUtqY0A0PyqhX_I/exec";
+    const SHEET_ID = "1NNGSN75mXQz_eBUeiFTmWaXdo5xgH779jTOdBEFKLDo";
+  </script>
+
+  <!-- NAVBAR -->
+  <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-50 no-print">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('pelaporan')">
+        <img src="logo.png" alt="Logo SMKKA" class="h-11 w-11 object-contain bg-white rounded-full p-1 shadow border border-blue-300">
+        <div>
+          <span class="font-bold text-lg leading-tight block tracking-wide">SMK KAMARUL ARIFFIN</span>
+          <span class="text-xs text-blue-200">Sistem Pelaporan &amp; Pengurusan Kerosakan</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="showPage('pelaporan')" id="btn-pelaporan" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition bg-blue-800 text-white shadow">
+          <i class="fa fa-plus-circle mr-1.5"></i> Pelaporan
+        </button>
+        <button onclick="showPage('dashboard')" id="btn-dashboard" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition hover:bg-blue-800 text-blue-100">
+          <i class="fa fa-table-columns mr-1.5"></i> Dashboard
+        </button>
+        <button onclick="showPage('cetakan')" id="btn-cetakan" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition hover:bg-blue-800 text-blue-100">
+          <i class="fa fa-print mr-1.5"></i> Cetakan
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- KANDUNGAN UTAMA -->
+  <div class="max-w-5xl mx-auto p-4 flex-grow w-full">
+
+    <!-- ==================== HALAMAN 1: BORANG PELAPORAN ==================== -->
+    <div id="page-pelaporan" class="page">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+        <div class="border-b border-slate-200 pb-4 mb-6">
+          <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+            <i class="fa-solid fa-clipboard-list text-blue-800 mr-3"></i> Borang Laporan Kerosakan Baharu
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Sila isi maklumat kerosakan di bawah untuk semakan dan tindakan pihak pentadbiran / aset sekolah.</p>
+        </div>
+
+        <form id="formKerosakan" onsubmit="submitReport(event)" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Tarikh & Masa Automatik -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Masa &amp; Tarikh Pelaporan (Automatik)</label>
+              <input type="text" id="tarikhMasa" name="tarikhMasa" readonly
+                     class="w-full bg-slate-100 border border-slate-300 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 focus:outline-none cursor-not-allowed">
+            </div>
+
+            <!-- Nama Pelapor -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nama Pelapor <span class="text-red-500">*</span></label>
+              <input type="text" id="namaPelapor" name="namaPelapor" required placeholder="cth: En. Azman / Cikgu Siti"
+                     class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
+            </div>
+
+            <!-- Blok / Kawasan Kerosakan -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Blok / Kawasan Kerosakan <span class="text-red-500">*</span></label>
+              <input type="text" id="lokasi" name="lokasi" required placeholder="cth: Blok A, Bilik Guru, Makmal Sains 1, Tandas Murid"
+                     class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
+            </div>
+
+            <!-- Jenis Kerosakan -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Jenis Kerosakan <span class="text-red-500">*</span></label>
+              <select id="jenis" name="jenis" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white">
+                <option value="" disabled selected>Pilih jenis kerosakan</option>
+                <option value="Elektrikal">Elektrikal (Lampu, Kipas, Suis, dsb)</option>
+                <option value="Perpaipan">Perpaipan (Sinki, Tandas, Paip Bocor, dsb)</option>
+                <option value="Perabot">Perabot (Meja, Kerusi, Pintu, Papan Putih, dsb)</option>
+                <option value="Kawasan">Kawasan (Pagar, Longkang, Pokok, Laluan Gajah Menyusur)</option>
+                <option value="Lain-lain">Lain-lain</option>
+              </select>
+            </div>
+
+            <!-- Tahap Kerosakan -->
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tahap Kerosakan <span class="text-red-500">*</span></label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <label class="border rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition border-red-300 bg-red-50/50">
+                  <input type="radio" name="tahap" value="Kritikal" required class="accent-red-600 h-4 w-4 mb-1">
+                  <span class="text-sm font-bold text-red-700">Kritikal</span>
+                  <span class="text-[11px] text-red-600 text-center">Menjejaskan keselamatan &amp; PdP</span>
+                </label>
+                <label class="border rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition border-amber-300 bg-amber-50/50">
+                  <input type="radio" name="tahap" value="Sederhana" class="accent-amber-600 h-4 w-4 mb-1">
+                  <span class="text-sm font-bold text-amber-700">Sederhana</span>
+                  <span class="text-[11px] text-amber-600 text-center">Perlu tindakan segera</span>
+                </label>
+                <label class="border rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition border-emerald-300 bg-emerald-50/50">
+                  <input type="radio" name="tahap" value="Kecil" class="accent-emerald-600 h-4 w-4 mb-1">
+                  <span class="text-sm font-bold text-emerald-700">Kecil</span>
+                  <span class="text-[11px] text-emerald-600 text-center">Kerosakan minima / tidak bahaya</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Penerangan Masalah -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Penerangan Masalah <span class="text-red-500">*</span></label>
+            <textarea id="penerangan" name="penerangan" rows="3" required placeholder="Huraikan kerosakan yang berlaku secara jelas..."
+                      class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"></textarea>
+          </div>
+
+          <!-- Cadangan Baik Pulih (Tidak Wajib) -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Cadangan Baik Pulih / Penambahbaikan <span class="text-xs text-slate-400 font-normal lowercase">(tidak wajib diisi)</span>
+            </label>
+            <textarea id="cadangan" name="cadangan" rows="2" placeholder="Cadangan penyelesaian atau alat ganti jika ada..."
+                      class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none"></textarea>
+          </div>
+
+          <!-- Muat Naik Gambar (Wajib 1, Maksimum 4) -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Muat Naik Gambar Bukti Kerosakan <span class="text-red-500">*</span>
+              <span class="text-xs text-slate-500 font-normal lowercase">(wajib sekurang-kurangnya 1 keping &amp; maksimum 4 keping)</span>
+            </label>
+            <input type="file" id="gambarInput" accept="image/*" multiple onchange="handleImageUpload(event)"
+                   class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-100 file:text-blue-800 hover:file:bg-blue-200 cursor-pointer">
+            <div id="imagePreviewContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4"></div>
+          </div>
+
+          <button type="submit" id="btnHantar" class="w-full py-3.5 bg-blue-900 text-white font-bold rounded-xl shadow hover:bg-blue-800 transition flex items-center justify-center space-x-2">
+            <i class="fa fa-paper-plane"></i>
+            <span>Hantar Laporan Kerosakan</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== HALAMAN 2: DASHBOARD STATUS ==================== -->
+    <div id="page-dashboard" class="page hidden">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+              <i class="fa-solid fa-chart-pie text-blue-800 mr-3"></i> Dashboard Pemantauan Kerosakan
+            </h2>
+            <p class="text-sm text-slate-500 mt-0.5">Senarai aduan dan kemas kini status tindakan pembaikan.</p>
+          </div>
+          <button onclick="loadReports()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-lg border font-semibold flex items-center">
+            <i class="fa fa-rotate mr-2 text-blue-700"></i> Muat Semula Data
+          </button>
+        </div>
+
+        <!-- Ringkasan Kad Statistik -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+            <span class="text-xs font-bold text-blue-700 block uppercase">Jumlah Aduan</span>
+            <span id="stat-total" class="text-2xl font-black text-blue-900">0</span>
+          </div>
+          <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+            <span class="text-xs font-bold text-red-700 block uppercase">Kritikal</span>
+            <span id="stat-kritikal" class="text-2xl font-black text-red-700">0</span>
+          </div>
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+            <span class="text-xs font-bold text-amber-700 block uppercase">Belum Selesai</span>
+            <span id="stat-pending" class="text-2xl font-black text-amber-800">0</span>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+            <span class="text-xs font-bold text-emerald-700 block uppercase">Selesai</span>
+            <span id="stat-selesai" class="text-2xl font-black text-emerald-800">0</span>
+          </div>
+        </div>
+
+        <!-- Jadual Laporan -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-600">
+            <thead class="bg-slate-50 text-slate-700 font-bold border-b text-xs uppercase tracking-wider">
+              <tr>
+                <th class="py-3 px-3">Tarikh &amp; Masa</th>
+                <th class="py-3 px-3">Pelapor / Lokasi</th>
+                <th class="py-3 px-3">Jenis Kerosakan</th>
+                <th class="py-3 px-3">Tahap</th>
+                <th class="py-3 px-3">Status</th>
+                <th class="py-3 px-3 text-center">Tindakan Pentadbir</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardTableBody" class="divide-y divide-slate-100">
+              <tr>
+                <td colspan="6" class="text-center py-8 text-slate-400">Tekan 'Muat Semula Data' atau tunggu data dimuatkan...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== HALAMAN 3: CETAKAN LAPORAN ==================== -->
+    <div id="page-cetakan" class="page hidden">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 no-print">
+        <h2 class="text-2xl font-bold text-slate-800 flex items-center border-b border-slate-200 pb-4 mb-2">
+          <i class="fa-solid fa-print text-blue-800 mr-3"></i> Cetakan Laporan Kerosakan (1 Muka Surat)
+        </h2>
+        <p class="text-sm text-slate-500 mb-6">Pilih laporan di bawah untuk menjana lembaran rasmi bersaiz A4 lengkap bersama logo sekolah dan ruangan tandatangan pengesahan.</p>
+
+        <div id="senaraiCetakanContainer" class="space-y-3">
+          <!-- Dijana melalui JS -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== TEMPLATE CETAKAN (A4 1 MUKA SURAT) ==================== -->
+  <div id="printArea" class="hidden bg-white max-w-[210mm] mx-auto p-6 border border-slate-300 shadow-md print:border-none print:shadow-none text-slate-900">
+    <!-- Header Rasmi Surat Sekolah -->
+    <div class="flex items-center space-x-4 border-b-2 border-slate-900 pb-2 mb-3">
+      <img src="logo.png" alt="Logo SMKKA" class="w-16 h-16 object-contain">
+      <div class="flex-1 text-center">
+        <h1 class="text-lg font-black uppercase tracking-wider text-slate-900">SMK KAMARUL ARIFFIN</h1>
+        <p class="text-[11px] font-bold uppercase text-slate-700 tracking-wide">Borang Aduan &amp; Pengesahan Kerosakan Fizikal Sekolah</p>
+        <p class="text-[10px] text-slate-500 italic">Dokumen Pengurusan Aset &amp; Penyelenggaraan Fasiliti</p>
+      </div>
+      <div class="text-right border-l pl-3 border-slate-300">
+        <span class="text-[9px] font-bold text-slate-500 block uppercase">No. Rujukan:</span>
+        <span id="print-id" class="text-xs font-mono font-bold text-blue-900">REP-XXXXXX</span>
+      </div>
+    </div>
+
+    <!-- Maklumat Laporan Utama -->
+    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] border border-slate-300 rounded p-2.5 mb-2.5 bg-slate-50/70">
+      <div><span class="font-bold text-slate-600">Tarikh &amp; Masa:</span> <span id="print-tarikh" class="font-medium"></span></div>
+      <div><span class="font-bold text-slate-600">Nama Pelapor:</span> <span id="print-pelapor" class="font-medium uppercase"></span></div>
+      <div><span class="font-bold text-slate-600">Blok / Kawasan:</span> <span id="print-lokasi" class="font-medium"></span></div>
+      <div><span class="font-bold text-slate-600">Jenis Kerosakan:</span> <span id="print-jenis" class="font-medium"></span></div>
+      <div><span class="font-bold text-slate-600">Tahap Kerosakan:</span> <span id="print-tahap" class="font-bold"></span></div>
+      <div><span class="font-bold text-slate-600">Status Semasa:</span> <span id="print-status" class="font-bold"></span></div>
+    </div>
+
+    <!-- Penerangan & Cadangan -->
+    <div class="space-y-2 mb-2.5 text-[11px]">
+      <div>
+        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Penerangan Masalah:</h3>
+        <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-2 min-h-[38px]"></p>
+      </div>
+      <div>
+        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Cadangan Baik Pulih / Penambahbaikan:</h3>
+        <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-2 min-h-[28px]"></p>
+      </div>
+    </div>
+
+    <!-- Lampiran Gambar Kerosakan (Muat 1 Muka Surat) -->
+    <div class="mb-3">
+      <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Lampiran Bukti Gambar:</h3>
+      <div id="print-gambar" class="grid grid-cols-4 gap-2 h-32">
+        <!-- Render melalui JS -->
+      </div>
+    </div>
+
+    <!-- Ruang Pengesahan & Tandatangan 3 Pihak -->
+    <div class="border-t-2 border-slate-900 pt-2 mt-3">
+      <div class="grid grid-cols-3 gap-4 text-center text-[10px]">
+        <div>
+          <p class="font-bold mb-10">Disediakan Oleh:</p>
+          <div class="border-b border-slate-500 w-3/4 mx-auto"></div>
+          <p class="mt-1 text-[10px] font-medium">(Tandatangan Pelapor)</p>
+        </div>
+        <div>
+          <p class="font-bold mb-10">Disemak Oleh:</p>
+          <div class="border-b border-slate-500 w-3/4 mx-auto"></div>
+          <p class="mt-1 text-[10px] font-medium">Guru Aset / Pegawai Bertugas</p>
+        </div>
+        <div>
+          <p class="font-bold mb-10">Disahkan Oleh:</p>
+          <div class="border-b border-slate-500 w-3/4 mx-auto"></div>
+          <p class="mt-1 text-[10px] font-medium">Pengetua / Barisan Penolong Kanan</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Butang Tindakan Semasa Prebiu (Tidak Dicetak) -->
+    <div class="mt-4 flex justify-end space-x-3 no-print">
+      <button onclick="window.print()" class="px-5 py-2 bg-blue-900 text-white text-xs font-bold rounded shadow hover:bg-blue-800">
+        <i class="fa fa-print mr-1.5"></i> Cetak Dokumen / Simpan PDF
+      </button>
+      <button onclick="document.getElementById('printArea').classList.add('hidden')" class="px-4 py-2 bg-slate-200 text-slate-700 text-xs font-bold rounded hover:bg-slate-300">
+        Tutup Prebiu
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== LOGIK APLIKASI (JAVASCRIPT) ==================== -->
+  <script>
+    let uploadedImagesBase64 = [];
+    let reportsCache = [];
+
+    // Navigasi Antara Halaman
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.remove('bg-blue-800', 'text-white', 'shadow');
+        b.classList.add('text-blue-100');
+      });
+
+      document.getElementById('page-' + pageId).classList.remove('hidden');
+      document.getElementById('btn-' + pageId).classList.add('bg-blue-800', 'text-white', 'shadow');
+      document.getElementById('btn-' + pageId).classList.remove('text-blue-100');
+
+      if (pageId === 'dashboard') loadReports();
+      if (pageId === 'cetakan') renderCetakanList();
+      
+      document.getElementById('printArea').classList.add('hidden');
+    }
+
+    // Jam & Tarikh Automatik Terkini
+    function updateClock() {
+      const now = new Date();
+      const options = { 
+        year: 'numeric', month: 'short', day: 'numeric', 
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: true 
+      };
+      const formatted = now.toLocaleString('ms-MY', options);
+      const elem = document.getElementById('tarikhMasa');
+      if (elem) elem.value = formatted;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Pemampatan & Muat Naik Gambar (1 - 4 Keping)
+    function handleImageUpload(event) {
+      const files = Array.from(event.target.files);
+      if (files.length > 4) {
+        alert("Amaran: Maksimum 4 keping gambar sahaja dibenarkan.");
+        event.target.value = "";
+        return;
+      }
+      uploadedImagesBase64 = [];
+      const preview = document.getElementById('imagePreviewContainer');
+      preview.innerHTML = "";
+
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 700;
+            const scale = MAX_WIDTH / img.width;
+            canvas.width = (img.width > MAX_WIDTH) ? MAX_WIDTH : img.width;
+            canvas.height = (img.width > MAX_WIDTH) ? (img.height * scale) : img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+            
+            uploadedImagesBase64.push(compressedBase64);
+
+            const imgCard = document.createElement('img');
+            imgCard.src = compressedBase64;
+            imgCard.className = "w-full h-24 object-cover rounded-lg border border-slate-300 shadow-sm";
+            preview.appendChild(imgCard);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Menghantar Laporan ke Google Apps Script
+    async function submitReport(e) {
+      e.preventDefault();
+
+      if (uploadedImagesBase64.length === 0) {
+        alert("Sila muat naik sekurang-kurangnya 1 keping gambar kerosakan.");
+        return;
+      }
+
+      const btn = document.getElementById('btnHantar');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa fa-circle-notch fa-spin mr-2"></i> Sedang Menyimpan ke Google Sheets...`;
+
+      const payload = {
+        action: "addReport",
+        tarikhMasa: document.getElementById('tarikhMasa').value,
+        namaPelapor: document.getElementById('namaPelapor').value,
+        lokasi: document.getElementById('lokasi').value,
+        jenis: document.getElementById('jenis').value,
+        tahap: document.querySelector('input[name="tahap"]:checked').value,
+        penerangan: document.getElementById('penerangan').value,
+        cadangan: document.getElementById('cadangan').value,
+        status: "Belum Selesai",
+        gambar: uploadedImagesBase64
+      };
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          alert("Laporan kerosakan berjaya dihantar dan direkodkan!");
+          document.getElementById('formKerosakan').reset();
+          uploadedImagesBase64 = [];
+          document.getElementById('imagePreviewContainer').innerHTML = "";
+          updateClock();
+          showPage('dashboard');
+        } else {
+          alert("Ralat dari Google Apps Script: " + (result.message || result.error));
+        }
+      } catch (err) {
+        alert("Gagal menghantar laporan: Sila pastikan Web App Google Apps Script telah di-deploy dengan kebenaran 'Anyone'.");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa fa-paper-plane mr-2"></i> Hantar Laporan Kerosakan`;
+      }
+    }
+
+    // Muat Turun Senarai Aduan daripada Google Apps Script
+    async function loadReports() {
+      const tbody = document.getElementById('dashboardTableBody');
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400"><i class="fa fa-spinner fa-spin mr-2"></i> Memuat data daripada Google Sheets...</td></tr>`;
+
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const json = await response.json();
+        reportsCache = json.data || [];
+        renderDashboard(reportsCache);
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-red-500">Ralat memuatkan rekod daripada pangkalan data Google Sheets.</td></tr>`;
+      }
+    }
+
+    // Papar Data ke Dashboard & Kira Statistik
+    function renderDashboard(data) {
+      const tbody = document.getElementById('dashboardTableBody');
+      tbody.innerHTML = "";
+
+      let countKritikal = 0;
+      let countPending = 0;
+      let countSelesai = 0;
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">Tiada rekod kerosakan ditemui.</td></tr>`;
+      }
+
+      data.forEach(item => {
+        if (item.tahap === "Kritikal") countKritikal++;
+        if (item.status === "Selesai") countSelesai++;
+        else countPending++;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-xs font-mono">${item.tarikhMasa}</td>
+          <td class="py-3 px-3">
+            <div class="font-bold text-slate-800">${item.namaPelapor}</div>
+            <div class="text-xs text-slate-500">${item.lokasi}</div>
+          </td>
+          <td class="py-3 px-3">
+            <span class="inline-block bg-slate-100 text-slate-700 text-xs px-2 py-0.5 rounded font-medium">${item.jenis}</span>
+          </td>
+          <td class="py-3 px-3">
+            <span class="text-xs px-2.5 py-1 rounded-full font-bold ${
+              item.tahap === 'Kritikal' ? 'bg-red-100 text-red-700' :
+              item.tahap === 'Sederhana' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+            }">${item.tahap}</span>
+          </td>
+          <td class="py-3 px-3">
+            <span class="text-xs px-2.5 py-1 rounded-full font-bold ${
+              item.status === 'Selesai' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+            }">
+              <i class="fa ${item.status === 'Selesai' ? 'fa-check-circle' : 'fa-hourglass-half'} mr-1"></i>${item.status}
+            </span>
+          </td>
+          <td class="py-3 px-3 text-center">
+            <button onclick="promptStatusChange('${item.id}', '${item.status}')" class="text-xs bg-blue-50 text-blue-800 hover:bg-blue-100 font-semibold px-3 py-1.5 rounded-lg border border-blue-200 transition">
+              <i class="fa fa-lock mr-1"></i> Tukar Status
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('stat-total').innerText = data.length;
+      document.getElementById('stat-kritikal').innerText = countKritikal;
+      document.getElementById('stat-pending').innerText = countPending;
+      document.getElementById('stat-selesai').innerText = countSelesai;
+    }
+
+    // Akses Kata Laluan Pentadbir bagi Menukar Status Aduan
+    async function promptStatusChange(id, currentStatus) {
+      const password = prompt("Sila masukkan kata laluan Pentadbir / Guru Aset:");
+      if (!password) return;
+
+      const validList = ['rosakpengetua', 'rosakpk1', 'rosakpkhem', 'rosakpkko', 'rosakguruaset'];
+      if (!validList.includes(password.trim())) {
+        alert("Akses Ditolak: Kata laluan tidak sah!");
+        return;
+      }
+
+      const targetStatus = (currentStatus === "Selesai") ? "Belum Selesai" : "Selesai";
+      const sahkan = confirm(`Tukar status kerosakan ${id} kepada: "${targetStatus}"?`);
+      if (!sahkan) return;
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "updateStatus",
+            id: id,
+            status: targetStatus,
+            password: password.trim()
+          })
+        });
+        const res = await response.json();
+        alert(res.message);
+        loadReports();
+      } catch (err) {
+        alert("Ralat sambungan semasa mengemaskini status.");
+      }
+    }
+
+    // Render Senarai Pilihan Cetakan Laporan
+    function renderCetakanList() {
+      const container = document.getElementById('senaraiCetakanContainer');
+      container.innerHTML = "";
+
+      if (!reportsCache || reportsCache.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 text-sm italic">Tiada rekod laporan untuk dicetak. Sila muat semula dashboard terlebih dahulu.</p>`;
+        return;
+      }
+
+      reportsCache.forEach(item => {
+        const row = document.createElement('div');
+        row.className = "flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition gap-3";
+        row.innerHTML = `
+          <div>
+            <div class="font-bold text-slate-800 text-sm">${item.lokasi} &bull; <span class="text-blue-700">${item.jenis}</span></div>
+            <div class="text-xs text-slate-500">Dilapor oleh: <span class="font-semibold text-slate-700">${item.namaPelapor}</span> | Tarikh: ${item.tarikhMasa}</div>
+            <div class="mt-1 flex items-center space-x-2">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${
+                item.tahap === 'Kritikal' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+              }">Tahap: ${item.tahap}</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${
+                item.status === 'Selesai' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+              }">Status: ${item.status}</span>
+            </div>
+          </div>
+          <button onclick="preparePrint('${item.id}')" class="px-4 py-2 bg-blue-900 text-white text-xs font-semibold rounded-lg hover:bg-blue-800 transition flex items-center self-start sm:self-center shadow-sm">
+            <i class="fa fa-file-invoice mr-1.5"></i> Jana Borang (1 Muka Surat)
+          </button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Persediaan Halaman Cetakan 1 Muka Surat Rasmi
+    function preparePrint(id) {
+      const item = reportsCache.find(r => r.id === id);
+      if (!item) return;
+
+      document.getElementById('print-id').innerText = item.id;
+      document.getElementById('print-tarikh').innerText = item.tarikhMasa;
+      document.getElementById('print-pelapor').innerText = item.namaPelapor;
+      document.getElementById('print-lokasi').innerText = item.lokasi;
+      document.getElementById('print-jenis').innerText = item.jenis;
+      document.getElementById('print-tahap').innerText = item.tahap;
+      document.getElementById('print-status').innerText = item.status;
+      document.getElementById('print-penerangan').innerText = item.penerangan;
+      document.getElementById('print-cadangan').innerText = item.cadangan || "-";
+
+      const gContainer = document.getElementById('print-gambar');
+      gContainer.innerHTML = "";
+      if (item.gambar && item.gambar.length > 0) {
+        item.gambar.forEach(base64 => {
+          const img = document.createElement('img');
+          img.src = base64;
+          img.className = "w-full h-full object-cover border border-slate-300 rounded";
+          gContainer.appendChild(img);
+        });
+      } else {
+        gContainer.innerHTML = `<div class="col-span-4 text-center text-xs text-slate-400 py-6 italic border rounded bg-slate-50">Tiada gambar kerosakan dilampirkan</div>`;
+      }
+
+      const pArea = document.getElementById('printArea');
+      pArea.classList.remove('hidden');
+      pArea.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
