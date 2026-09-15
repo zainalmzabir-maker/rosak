@@ -14,14 +14,14 @@
 
   <style>
     /* =====================================================
-       KAWALAN CETAKAN A4: TEPAT 1 MUKA SURAT (TIADA MUKA KOSONG)
+       KAWALAN CETAKAN A4: TEPAT 1 MUKA SURAT SAHAJA
        ===================================================== */
     @page {
       size: A4 portrait;
       margin: 0mm;
     }
 
-    /* Kertas A4 Fizikal (Paparan Skrin) */
+    /* Kertas A4 Fizikal */
     .a4-sheet {
       width: 210mm;
       height: 297mm;
@@ -37,7 +37,6 @@
       overflow: hidden;
     }
 
-    /* Cetakan Sebenar (window.print) */
     @media print {
       html, body {
         width: 210mm !important;
@@ -51,12 +50,12 @@
         print-color-adjust: exact !important;
       }
 
-      /* Sembunyikan SEMUA elemen asal laman web */
+      /* Sembunyikan semua elemen laman web */
       body > *:not(#printModal) {
         display: none !important;
       }
 
-      /* Paksa modal cetakan bermula tepat di (0,0) Mukasurat 1 */
+      /* Pastikan cetakan bermula tepat di (0,0) Mukasurat 1 */
       #printModal {
         display: block !important;
         position: absolute !important;
@@ -73,12 +72,10 @@
         page-break-after: avoid !important;
       }
 
-      /* Bar kawalan dan butang tidak dicetak */
-      #printModalBar, .no-print, .no-print-bar {
+      #printModalBar, .no-print {
         display: none !important;
       }
 
-      /* Helaian A4 muat tepat tanpa limpahan */
       #printableReport {
         width: 210mm !important;
         height: 296.5mm !important;
@@ -110,7 +107,7 @@
     const SHEET_ID = "1NNGSN75mXQz_eBUeiFTmWaXdo5xgH779jTOdBEFKLDo";
   </script>
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR (HALAMAN CETAKAN TELAH DIBUANG) -->
   <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-40 no-print">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('pelaporan')">
@@ -126,9 +123,6 @@
         </button>
         <button onclick="showPage('dashboard')" id="btn-dashboard" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition hover:bg-blue-800 text-blue-100">
           <i class="fa fa-table-columns mr-1.5"></i> Dashboard
-        </button>
-        <button onclick="showPage('cetakan')" id="btn-cetakan" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition hover:bg-blue-800 text-blue-100">
-          <i class="fa fa-print mr-1.5"></i> Cetakan
         </button>
       </div>
     </div>
@@ -161,6 +155,13 @@
                      class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
             </div>
 
+            <!-- JAWATAN PELAPOR -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Jawatan Pelapor <span class="text-red-500">*</span></label>
+              <input type="text" id="jawatanPelapor" name="jawatanPelapor" required placeholder="cth: Guru / AKP / Pekerja Kebersihan / Pengawal"
+                     class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
+            </div>
+
             <div>
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Blok / Kawasan Kerosakan <span class="text-red-500">*</span></label>
               <input type="text" id="lokasi" name="lokasi" required placeholder="cth: Blok A, Bilik Guru, Makmal Komputer 1"
@@ -179,25 +180,14 @@
               </select>
             </div>
 
-            <div class="md:col-span-2">
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tahap Kerosakan <span class="text-red-500">*</span></label>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <label class="border rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition border-red-300 bg-red-50/50">
-                  <input type="radio" name="tahap" value="Kritikal" required class="accent-red-600 h-4 w-4 mb-1">
-                  <span class="text-sm font-bold text-red-700">Kritikal</span>
-                  <span class="text-[11px] text-red-600 text-center">Menjejaskan PdP &amp; Keselamatan</span>
-                </label>
-                <label class="border rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition border-amber-300 bg-amber-50/50">
-                  <input type="radio" name="tahap" value="Sederhana" class="accent-amber-600 h-4 w-4 mb-1">
-                  <span class="text-sm font-bold text-amber-700">Sederhana</span>
-                  <span class="text-[11px] text-amber-600 text-center">Perlu tindakan segera</span>
-                </label>
-                <label class="border rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition border-emerald-300 bg-emerald-50/50">
-                  <input type="radio" name="tahap" value="Kecil" class="accent-emerald-600 h-4 w-4 mb-1">
-                  <span class="text-sm font-bold text-emerald-700">Kecil</span>
-                  <span class="text-[11px] text-emerald-600 text-center">Kerosakan biasa / minima</span>
-                </label>
-              </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tahap Kerosakan <span class="text-red-500">*</span></label>
+              <select id="tahap" name="tahap" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white">
+                <option value="" disabled selected>Pilih tahap kerosakan</option>
+                <option value="Kritikal">Kritikal (Menjejaskan PdP & Keselamatan)</option>
+                <option value="Sederhana">Sederhana (Perlu tindakan segera)</option>
+                <option value="Kecil">Kecil (Kerosakan minima)</option>
+              </select>
             </div>
           </div>
 
@@ -258,7 +248,7 @@
             <h2 class="text-2xl font-bold text-slate-800 flex items-center">
               <i class="fa-solid fa-chart-pie text-blue-800 mr-3"></i> Dashboard Pemantauan Kerosakan
             </h2>
-            <p class="text-sm text-slate-500 mt-0.5">Uruskan aduan, kemaskini butiran, sahkan tindakan pembaikan atau cetak laporan terus dari sini.</p>
+            <p class="text-sm text-slate-500 mt-0.5">Pantau status laporan dan jana cetakan dokumen terus dari sini.</p>
           </div>
           <button onclick="loadReports()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-lg border font-semibold flex items-center">
             <i class="fa fa-rotate mr-2 text-blue-700"></i> Muat Semula Data
@@ -290,7 +280,7 @@
             <thead class="bg-slate-50 text-slate-700 font-bold border-b text-xs uppercase tracking-wider">
               <tr>
                 <th class="py-3 px-3">Tarikh &amp; Masa</th>
-                <th class="py-3 px-3">Pelapor / Lokasi</th>
+                <th class="py-3 px-3">Pelapor &amp; Jawatan / Lokasi</th>
                 <th class="py-3 px-3">Jenis</th>
                 <th class="py-3 px-3">Tahap</th>
                 <th class="py-3 px-3">Status</th>
@@ -303,20 +293,6 @@
               </tr>
             </tbody>
           </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== HALAMAN 3: CETAKAN LAPORAN ==================== -->
-    <div id="page-cetakan" class="page hidden">
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 no-print">
-        <h2 class="text-2xl font-bold text-slate-800 flex items-center border-b border-slate-200 pb-4 mb-2">
-          <i class="fa-solid fa-print text-blue-800 mr-3"></i> Arkib Cetakan Laporan Kerosakan
-        </h2>
-        <p class="text-sm text-slate-500 mb-6">Pilih mana-mana laporan di bawah untuk menjana lembaran bersaiz A4 1 Muka Surat Penuh siap ulasan pengesah dan tandatangan.</p>
-
-        <div id="senaraiCetakanContainer" class="space-y-3">
-          <!-- Dijana oleh JS -->
         </div>
       </div>
     </div>
@@ -343,6 +319,10 @@
             <input type="text" id="editNamaPelapor" required class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-600">
           </div>
           <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jawatan Pelapor</label>
+            <input type="text" id="editJawatanPelapor" required class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-600">
+          </div>
+          <div>
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Blok / Kawasan</label>
             <input type="text" id="editLokasi" required class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-600">
           </div>
@@ -356,7 +336,7 @@
               <option value="Lain-lain">Lain-lain</option>
             </select>
           </div>
-          <div>
+          <div class="sm:col-span-2">
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tahap Kerosakan</label>
             <select id="editTahap" required class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-600 bg-white">
               <option value="Kritikal">Kritikal</option>
@@ -455,12 +435,12 @@
   <div id="printModal" style="display: none;" class="fixed inset-0 bg-slate-950/85 z-50 flex flex-col items-center justify-start overflow-y-auto py-4">
     
     <!-- BAR KAWALAN DI LUAR KERTAS (TIDAK AKAN DICETAK) -->
-    <div id="printModalBar" class="no-print-bar sticky top-2 z-50 w-full max-w-[210mm] bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex justify-between items-center mb-4 border border-slate-700">
+    <div id="printModalBar" class="no-print sticky top-2 z-50 w-full max-w-[210mm] bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex justify-between items-center mb-4 border border-slate-700">
       <div class="flex items-center space-x-2">
         <i class="fa fa-print text-blue-400 text-lg"></i>
         <div>
           <p class="text-sm font-bold leading-tight">Pralihat Dokumen Laporan (A4)</p>
-          <p class="text-[11px] text-slate-400">Muat tepat 1 muka surat sahaja</p>
+          <p class="text-[11px] text-slate-400">Muat tepat 1 muka surat penuh</p>
         </div>
       </div>
       <div class="flex space-x-2">
@@ -473,7 +453,7 @@
       </div>
     </div>
 
-    <!-- KERTAS A4 FIZIKAL (HANYA INI YANG AKAN DICETAK) -->
+    <!-- KERTAS A4 FIZIKAL (HANYA BAHAGIAN INI DICETAK) -->
     <div id="printableReport" class="a4-sheet text-slate-900 mb-6">
       
       <!-- BAHAGIAN 1: HEADER, DATA & TEKS PENERANGAN -->
@@ -492,14 +472,15 @@
           </div>
         </div>
 
-        <!-- Ringkasan Data -->
+        <!-- Ringkasan Data (Termasuk Jawatan Pelapor) -->
         <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] border border-slate-300 rounded p-1.5 bg-slate-50/70">
-          <div><span class="font-bold text-slate-600">Tarikh &amp; Masa Aduan:</span> <span id="print-tarikh" class="font-medium"></span></div>
+          <div><span class="font-bold text-slate-600">Tarikh &amp; Masa:</span> <span id="print-tarikh" class="font-medium"></span></div>
+          <div><span class="font-bold text-slate-600">Status Semasa:</span> <span id="print-status" class="font-bold"></span></div>
           <div><span class="font-bold text-slate-600">Nama Pelapor:</span> <span id="print-pelapor" class="font-medium uppercase"></span></div>
+          <div><span class="font-bold text-slate-600">Jawatan Pelapor:</span> <span id="print-jawatan" class="font-medium"></span></div>
           <div><span class="font-bold text-slate-600">Blok / Lokasi:</span> <span id="print-lokasi" class="font-medium"></span></div>
           <div><span class="font-bold text-slate-600">Jenis Kerosakan:</span> <span id="print-jenis" class="font-medium"></span></div>
-          <div><span class="font-bold text-slate-600">Tahap Kerosakan:</span> <span id="print-tahap" class="font-bold"></span></div>
-          <div><span class="font-bold text-slate-600">Status Semasa:</span> <span id="print-status" class="font-bold"></span></div>
+          <div class="col-span-2"><span class="font-bold text-slate-600">Tahap Kerosakan:</span> <span id="print-tahap" class="font-bold"></span></div>
         </div>
 
         <!-- Penerangan, Cadangan & Ulasan Pengesah -->
@@ -519,11 +500,11 @@
         </div>
       </div>
 
-      <!-- BAHAGIAN 2: GAMBAR DINAMIK (AUTO-STRETCH MENYERAP BAKI RUANG TANPA LEBIH HAD) -->
+      <!-- BAHAGIAN 2: GAMBAR DINAMIK (AUTO-STRETCH MENYERAP BAKI RUANG TENGAH TANPA LEBIH HAD) -->
       <div class="my-1 flex flex-col justify-center min-h-0" style="flex: 1 1 0%;">
-        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[8.5px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
+        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[8.5px]">Bukti Gambar Kerosakan:</h3>
         <div id="print-gambar" class="w-full flex-grow flex flex-col min-h-0 overflow-hidden">
-          <!-- Render dinamik melalui JavaScript -->
+          <!-- Render melalui JavaScript -->
         </div>
       </div>
 
@@ -539,6 +520,7 @@
             <div>
               <div class="border-b border-slate-400 w-3/4 mx-auto mb-0.5"></div>
               <p id="print-sign-pelapor-name" class="font-semibold text-slate-800 uppercase text-[8px]"></p>
+              <p id="print-sign-pelapor-jawatan" class="text-[7.5px] text-slate-500"></p>
             </div>
           </div>
 
@@ -684,7 +666,6 @@
         setTimeout(() => padPelapor.resize(), 100);
       }
       if (pageId === 'dashboard') loadReports();
-      if (pageId === 'cetakan') renderCetakanList();
     }
 
     // Jam Automatik
@@ -701,7 +682,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Pemampatan & Muat Naik Gambar
+    // Pemampatan Gambar Laju (550px @ 55% JPEG) -> 10x LEBIH PANTAS & RINGAN
     function handleImageUpload(event, mode) {
       const files = Array.from(event.target.files);
       if (files.length > 4) {
@@ -723,13 +704,13 @@
           const img = new Image();
           img.onload = function() {
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 900;
+            const MAX_WIDTH = 550;
             const scale = MAX_WIDTH / img.width;
             canvas.width = (img.width > MAX_WIDTH) ? MAX_WIDTH : img.width;
             canvas.height = (img.width > MAX_WIDTH) ? (img.height * scale) : img.height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const compressed = canvas.toDataURL('image/jpeg', 0.8);
+            const compressed = canvas.toDataURL('image/jpeg', 0.55);
             
             targetArray.push(compressed);
 
@@ -770,9 +751,10 @@
         action: "addReport",
         tarikhMasa: document.getElementById('tarikhMasa').value,
         namaPelapor: document.getElementById('namaPelapor').value,
+        jawatanPelapor: document.getElementById('jawatanPelapor').value,
         lokasi: document.getElementById('lokasi').value,
         jenis: document.getElementById('jenis').value,
-        tahap: document.querySelector('input[name="tahap"]:checked').value,
+        tahap: document.getElementById('tahap').value,
         penerangan: document.getElementById('penerangan').value,
         cadangan: document.getElementById('cadangan').value,
         gambar: uploadedImagesNew,
@@ -798,14 +780,14 @@
           alert("Ralat server: " + result.message);
         }
       } catch (err) {
-        alert("Ralat sambungan. Sila semak Apps Script deployment.");
+        alert("Ralat sambungan. Sila semak deployment Apps Script.");
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<i class="fa fa-paper-plane mr-2"></i> Hantar Laporan Kerosakan`;
       }
     }
 
-    // 2. Ambil Rekod Dari Google Apps Script
+    // 2. Ambil Rekod Dari Google Apps Script (Pantas)
     async function loadReports() {
       const tbody = document.getElementById('dashboardTableBody');
       tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400"><i class="fa fa-spinner fa-spin mr-2"></i> Memuat data daripada Google Sheets...</td></tr>`;
@@ -843,7 +825,7 @@
         tr.innerHTML = `
           <td class="py-3 px-3 text-xs font-mono">${item.tarikhMasa}</td>
           <td class="py-3 px-3">
-            <div class="font-bold text-slate-800">${item.namaPelapor}</div>
+            <div class="font-bold text-slate-800">${item.namaPelapor} <span class="text-xs font-normal text-slate-500">(${item.jawatanPelapor || '-'})</span></div>
             <div class="text-xs text-slate-500">${item.lokasi}</div>
           </td>
           <td class="py-3 px-3">
@@ -893,6 +875,7 @@
       document.getElementById('editReportId').value = item.id;
       document.getElementById('editModalId').innerText = item.id;
       document.getElementById('editNamaPelapor').value = item.namaPelapor;
+      document.getElementById('editJawatanPelapor').value = item.jawatanPelapor || "";
       document.getElementById('editLokasi').value = item.lokasi;
       document.getElementById('editJenis').value = item.jenis;
       document.getElementById('editTahap').value = item.tahap;
@@ -931,6 +914,7 @@
         action: "editReport",
         id: id,
         namaPelapor: document.getElementById('editNamaPelapor').value,
+        jawatanPelapor: document.getElementById('editJawatanPelapor').value,
         lokasi: document.getElementById('editLokasi').value,
         jenis: document.getElementById('editJenis').value,
         tahap: document.getElementById('editTahap').value,
@@ -1043,40 +1027,7 @@
       }
     }
 
-    // 6. Senarai & Cetakan A4 1 Muka Surat Penuh
-    function renderCetakanList() {
-      const container = document.getElementById('senaraiCetakanContainer');
-      container.innerHTML = "";
-
-      if (!reportsCache || reportsCache.length === 0) {
-        container.innerHTML = `<p class="text-slate-400 text-sm italic">Tiada rekod laporan untuk dicetak.</p>`;
-        return;
-      }
-
-      reportsCache.forEach(item => {
-        const row = document.createElement('div');
-        row.className = "flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition gap-3";
-        row.innerHTML = `
-          <div>
-            <div class="font-bold text-slate-800 text-sm">${item.lokasi} &bull; <span class="text-blue-700">${item.jenis}</span></div>
-            <div class="text-xs text-slate-500">Pelapor: <span class="font-semibold text-slate-700">${item.namaPelapor}</span> | ${item.tarikhMasa}</div>
-            <div class="mt-1 flex items-center space-x-2">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${
-                item.tahap === 'Kritikal' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
-              }">Tahap: ${item.tahap}</span>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${
-                item.status === 'Selesai' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
-              }">Status: ${item.status}</span>
-            </div>
-          </div>
-          <button onclick="preparePrint('${item.id}')" class="px-4 py-2 bg-blue-900 text-white text-xs font-semibold rounded-lg hover:bg-blue-800 transition flex items-center self-start sm:self-center shadow-sm">
-            <i class="fa fa-file-invoice mr-1.5"></i> Lihat &amp; Cetak (A4)
-          </button>
-        `;
-        container.appendChild(row);
-      });
-    }
-
+    // 6. Cetakan A4 1 Muka Surat Penuh (Pasti Muat & Pantas)
     function preparePrint(id) {
       const item = reportsCache.find(r => r.id === id);
       if (!item) return;
@@ -1084,6 +1035,7 @@
       document.getElementById('print-id').innerText = item.id;
       document.getElementById('print-tarikh').innerText = item.tarikhMasa;
       document.getElementById('print-pelapor').innerText = item.namaPelapor;
+      document.getElementById('print-jawatan').innerText = item.jawatanPelapor || "-";
       document.getElementById('print-lokasi').innerText = item.lokasi;
       document.getElementById('print-jenis').innerText = item.jenis;
       document.getElementById('print-tahap').innerText = item.tahap;
@@ -1126,7 +1078,7 @@
           </div>`;
       } else if (images.length === 3) {
         gContainer.innerHTML = `
-          <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full h-full min-h-0">
+          <div class="grid grid-cols-2 grid-rows-2 gap-1.5 w-full h-full min-h-0">
             <div class="w-full h-full min-h-0 bg-slate-50 border border-slate-300 rounded p-1 flex items-center justify-center overflow-hidden">
               <img src="${images[0]}" class="max-h-full max-w-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>
@@ -1141,8 +1093,8 @@
           </div>`;
       } else if (images.length >= 4) {
         gContainer.innerHTML = `
-          <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full h-full min-h-0">
-            <div class="w-full h-full bg-slate-50 border border-slate-300 rounded p-1 flex items-center justify-center overflow-hidden">
+          <div class="grid grid-cols-2 grid-rows-2 gap-1.5 w-full h-full min-h-0">
+            <div class="w-full h-full min-h-0 bg-slate-50 border border-slate-300 rounded p-1 flex items-center justify-center overflow-hidden">
               <img src="${images[0]}" class="max-h-full max-w-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded p-1 flex items-center justify-center overflow-hidden">
@@ -1159,7 +1111,7 @@
         gContainer.innerHTML = `<div class="text-center text-xs text-slate-400 py-6 italic border rounded bg-slate-50 flex items-center justify-center w-full h-full">Tiada bukti gambar dilampirkan</div>`;
       }
 
-      // Tandatangan Pelapor
+      // Tandatangan Pelapor & Jawatan
       const imgPelapor = document.getElementById('print-sign-pelapor');
       if (item.signPelapor) {
         imgPelapor.src = item.signPelapor;
@@ -1168,6 +1120,7 @@
         imgPelapor.classList.add('hidden');
       }
       document.getElementById('print-sign-pelapor-name').innerText = item.namaPelapor;
+      document.getElementById('print-sign-pelapor-jawatan').innerText = "Jawatan: " + (item.jawatanPelapor || "-");
 
       // Pengesah Selesai
       const imgPengesah = document.getElementById('print-sign-pengesah');
