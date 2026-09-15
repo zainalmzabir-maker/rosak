@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistem Pelaporan Kerosakan - SMK Kamarul Ariffin</title>
   
-  <!-- FAVICON LOGO SEKOLAH -->
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
 
@@ -19,14 +18,14 @@
       margin: 0;
     }
 
-    /* Kertas A4 Fizikal Bersaiz Tepat & Kemas */
+    /* Kertas A4 Fizikal Sebenar */
     .a4-sheet {
       width: 210mm;
       height: 297mm;
       max-height: 297mm;
       background: white;
       padding: 6mm 10mm;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -51,9 +50,8 @@
         background: white !important;
         z-index: 99999 !important;
         padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        margin: 0 !important;
+        display: block !important;
       }
       .a4-sheet {
         width: 210mm !important;
@@ -295,7 +293,7 @@
   </div>
 
   <!-- ==================== MODAL 1: KEMAS KINI LAPORAN SEDIA ADA ==================== -->
-  <div id="modalEdit" class="fixed inset-0 bg-slate-900/60 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
+  <div id="modalEdit" style="display: none;" class="fixed inset-0 bg-slate-900/60 z-50 items-center justify-center p-4 overflow-y-auto no-print">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <div>
@@ -365,7 +363,7 @@
   </div>
 
   <!-- ==================== MODAL 2: TUKAR STATUS & ULASAN PENGESAH ==================== -->
-  <div id="modalStatus" class="fixed inset-0 bg-slate-900/60 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
+  <div id="modalStatus" style="display: none;" class="fixed inset-0 bg-slate-900/60 z-50 items-center justify-center p-4 overflow-y-auto no-print">
     <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <h3 class="text-base font-bold text-slate-800">Pengesahan Status Kerosakan</h3>
@@ -420,14 +418,32 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 3: PREBIU CETAKAN A4 (100% TERSEMBUNYI SECARA LALAI) ==================== -->
-  <div id="printModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-start justify-center p-2 overflow-y-auto no-print py-4">
-    <div class="a4-sheet text-slate-900 relative">
+  <!-- ==================== MODAL 3: PREBIU CETAKAN A4 (DIKUNCI GAYA INLINE DISPLAY: NONE) ==================== -->
+  <div id="printModal" style="display: none;" class="fixed inset-0 bg-slate-950/85 z-50 flex-col items-center justify-start overflow-y-auto no-print">
+    
+    <!-- BAR KAWALAN CETAK DI ATAS (STICKY TOP BAR) -->
+    <div class="sticky top-0 w-full max-w-[210mm] bg-blue-950 text-white p-3 rounded-b-xl shadow-2xl flex justify-between items-center z-50 mb-4 border-b border-blue-800">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-print text-blue-300"></i>
+        <span class="text-xs sm:text-sm font-bold tracking-wide">Pralihat Cetakan A4 (1 Muka Surat Sahaja)</span>
+      </div>
+      <div class="flex space-x-2">
+        <button onclick="window.print()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg shadow flex items-center transition">
+          <i class="fa fa-print mr-1.5"></i> Cetak Dokumen A4 Penuh
+        </button>
+        <button onclick="closePrintModal()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-lg shadow transition">
+          <i class="fa fa-xmark mr-1"></i> Tutup
+        </button>
+      </div>
+    </div>
+
+    <!-- KERTAS A4 FIZIKAL -->
+    <div class="a4-sheet text-slate-900 mb-8">
       
       <!-- TOP SECTION: HEADER, DATA & GAMBAR -->
       <div class="space-y-1.5 flex flex-col flex-grow">
         <!-- Header Rasmi -->
-        <div class="flex items-center space-x-3 border-b-2 border-slate-900 pb-1.5">
+        <div class="flex items-center space-x-3 border-b-2 border-slate-900 pb-1">
           <img src="logo.png" alt="Logo SMKKA" class="w-12 h-12 object-contain">
           <div class="flex-1 text-center">
             <h1 class="text-sm font-black uppercase tracking-wider text-slate-900">SMK KAMARUL ARIFFIN</h1>
@@ -441,7 +457,7 @@
         </div>
 
         <!-- Ringkasan Data -->
-        <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] border border-slate-300 rounded p-2 bg-slate-50/70">
+        <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] border border-slate-300 rounded p-1.5 bg-slate-50/70">
           <div><span class="font-bold text-slate-600">Tarikh &amp; Masa Aduan:</span> <span id="print-tarikh" class="font-medium"></span></div>
           <div><span class="font-bold text-slate-600">Nama Pelapor:</span> <span id="print-pelapor" class="font-medium uppercase"></span></div>
           <div><span class="font-bold text-slate-600">Blok / Lokasi:</span> <span id="print-lokasi" class="font-medium"></span></div>
@@ -453,67 +469,57 @@
         <!-- Penerangan, Cadangan & Ulasan Pengesah -->
         <div class="space-y-1 text-[10px]">
           <div>
-            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9px]">Penerangan Masalah:</h3>
+            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[8.5px]">Penerangan Masalah:</h3>
             <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1 min-h-[24px] text-[10px]"></p>
           </div>
           <div>
-            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9px]">Cadangan Baik Pulih / Tindakan:</h3>
+            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[8.5px]">Cadangan Baik Pulih / Tindakan:</h3>
             <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1 min-h-[20px] text-[10px]"></p>
           </div>
           <div>
-            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[9px]">Ulasan Pengesah / Catatan Pembaikan:</h3>
+            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[8.5px]">Ulasan Pengesah / Catatan Pembaikan:</h3>
             <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1 min-h-[20px] font-medium text-[10px]"></p>
           </div>
         </div>
 
-        <!-- Lampiran Gambar Dinamik (Auto-Stretch Mengisi Penuh Ruang Kosong Tengah) -->
-        <div class="flex-grow flex flex-col justify-center">
-          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[9px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
-          <div id="print-gambar" class="w-full flex-grow min-h-[190px]">
+        <!-- Lampiran Gambar Dinamik (Auto-Stretch Mengisi Baki Ruang Tengah Secara Seimbang) -->
+        <div class="flex-grow flex flex-col justify-center min-h-0">
+          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[8.5px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
+          <div id="print-gambar" class="w-full flex-grow flex flex-col min-h-0">
             <!-- Dijana secara dinamik melalui JS -->
           </div>
         </div>
       </div>
 
-      <!-- BOTTOM SECTION: TANDATANGAN & PENGESAHAN (LOCKED FOOTER DI BAWAH A4) -->
-      <div class="border-t-2 border-slate-900 pt-2 mt-1">
+      <!-- BOTTOM SECTION: TANDATANGAN & PENGESAHAN (LOCKED FOOTER DI TAPAK BAWAH A4) -->
+      <div class="border-t-2 border-slate-900 pt-1.5 mt-1 flex-shrink-0">
         <div class="grid grid-cols-2 gap-4 text-[10px]">
           <!-- Ruangan 1: Pelapor -->
-          <div class="border border-slate-300 rounded p-1.5 text-center bg-slate-50/50 flex flex-col justify-between h-22">
-            <p class="font-bold uppercase tracking-wider text-slate-700 text-[8.5px]">Disediakan Oleh (Pelapor):</p>
-            <div class="flex items-center justify-center my-0.5 h-9">
-              <img id="print-sign-pelapor" class="max-h-9 max-w-full object-contain mx-auto" alt="Tandatangan Pelapor">
+          <div class="border border-slate-300 rounded p-1.5 text-center bg-slate-50/50 flex flex-col justify-between h-20">
+            <p class="font-bold uppercase tracking-wider text-slate-700 text-[8px]">Disediakan Oleh (Pelapor):</p>
+            <div class="flex items-center justify-center my-0.5 h-8">
+              <img id="print-sign-pelapor" class="max-h-8 max-w-full object-contain mx-auto" alt="Tandatangan Pelapor">
             </div>
             <div>
               <div class="border-b border-slate-400 w-3/4 mx-auto mb-0.5"></div>
-              <p id="print-sign-pelapor-name" class="font-semibold text-slate-800 uppercase text-[8.5px]"></p>
+              <p id="print-sign-pelapor-name" class="font-semibold text-slate-800 uppercase text-[8px]"></p>
             </div>
           </div>
 
           <!-- Ruangan 2: Pengesah Selesai -->
-          <div class="border border-slate-300 rounded p-1.5 text-center bg-slate-50/50 flex flex-col justify-between h-22">
-            <p class="font-bold uppercase tracking-wider text-slate-700 text-[8.5px]">Pengesah Status Selesai:</p>
-            <div class="flex items-center justify-center my-0.5 h-9">
-              <img id="print-sign-pengesah" class="max-h-9 max-w-full object-contain mx-auto" alt="Tandatangan Pengesah">
+          <div class="border border-slate-300 rounded p-1.5 text-center bg-slate-50/50 flex flex-col justify-between h-20">
+            <p class="font-bold uppercase tracking-wider text-slate-700 text-[8px]">Pengesah Status Selesai:</p>
+            <div class="flex items-center justify-center my-0.5 h-8">
+              <img id="print-sign-pengesah" class="max-h-8 max-w-full object-contain mx-auto" alt="Tandatangan Pengesah">
               <span id="print-sign-pengesah-none" class="text-[9px] text-slate-400 italic">Belum Selesai / Disahkan</span>
             </div>
             <div>
               <div class="border-b border-slate-400 w-3/4 mx-auto mb-0.5"></div>
-              <p id="print-pengesah-role" class="font-bold text-slate-800 uppercase text-[8.5px]">-</p>
+              <p id="print-pengesah-role" class="font-bold text-slate-800 uppercase text-[8px]">-</p>
               <p id="print-pengesah-tarikh" class="text-[7.5px] text-slate-500">Tarikh Selesai: -</p>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Butang Kawalan Modal (Hilang Semasa Cetak) -->
-      <div class="mt-1.5 flex justify-end space-x-3 no-print border-t pt-1">
-        <button onclick="window.print()" class="px-4 py-1.5 bg-blue-900 text-white text-xs font-bold rounded shadow hover:bg-blue-800">
-          <i class="fa fa-print mr-1.5"></i> Cetak Dokumen A4 Penuh
-        </button>
-        <button onclick="closePrintModal()" class="px-3 py-1.5 bg-slate-300 text-slate-700 text-xs font-bold rounded hover:bg-slate-400">
-          Tutup Prebiu
-        </button>
       </div>
 
     </div>
@@ -871,15 +877,11 @@
         });
       }
 
-      const mEdit = document.getElementById('modalEdit');
-      mEdit.classList.remove('hidden');
-      mEdit.classList.add('flex');
+      document.getElementById('modalEdit').style.display = 'flex';
     }
 
     function closeEditModal() {
-      const mEdit = document.getElementById('modalEdit');
-      mEdit.classList.remove('flex');
-      mEdit.classList.add('hidden');
+      document.getElementById('modalEdit').style.display = 'none';
     }
 
     async function submitEditReport(e) {
@@ -944,15 +946,11 @@
       }
 
       document.getElementById('statusPassword').value = "";
-      const mStatus = document.getElementById('modalStatus');
-      mStatus.classList.remove('hidden');
-      mStatus.classList.add('flex');
+      document.getElementById('modalStatus').style.display = 'flex';
     }
 
     function closeStatusModal() {
-      const mStatus = document.getElementById('modalStatus');
-      mStatus.classList.remove('flex');
-      mStatus.classList.add('hidden');
+      document.getElementById('modalStatus').style.display = 'none';
     }
 
     async function submitStatusChange(e) {
@@ -1058,20 +1056,20 @@
       document.getElementById('print-cadangan').innerText = item.cadangan || "-";
       document.getElementById('print-ulasan').innerText = item.ulasanPengesah || "-";
 
-      // Susun letak gambar dinamik mengikut bilangan gambar (1, 2, 3 atau 4) dengan auto-stretch penuh
+      // Susun letak gambar dinamik (1, 2, 3 atau 4) dengan nisbah fleksibel penuh
       const gContainer = document.getElementById('print-gambar');
       gContainer.innerHTML = "";
       
       if (item.gambar && item.gambar.length > 0) {
         const len = item.gambar.length;
         if (len === 1) {
-          gContainer.className = "flex justify-center items-center w-full h-full";
+          gContainer.className = "flex justify-center items-center w-full h-full flex-grow min-h-0";
           gContainer.innerHTML = `
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else if (len === 2) {
-          gContainer.className = "grid grid-cols-2 gap-2.5 w-full h-full";
+          gContainer.className = "grid grid-cols-2 gap-2.5 w-full h-full flex-grow min-h-0";
           item.gambar.forEach(base64 => {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
@@ -1079,7 +1077,7 @@
               </div>`;
           });
         } else if (len === 3) {
-          gContainer.className = "grid grid-cols-2 gap-2 w-full h-full";
+          gContainer.className = "grid grid-cols-2 grid-rows-2 gap-2 w-full h-full flex-grow min-h-0";
           gContainer.innerHTML = `
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
@@ -1091,8 +1089,8 @@
               <img src="${item.gambar[2]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else {
-          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2) mengisi penuh ruang
-          gContainer.className = "grid grid-cols-2 gap-2.5 w-full h-full";
+          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2)
+          gContainer.className = "grid grid-cols-2 grid-rows-2 gap-2 w-full h-full flex-grow min-h-0";
           for (let i = 0; i < 4; i++) {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
@@ -1101,7 +1099,7 @@
           }
         }
       } else {
-        gContainer.innerHTML = `<div class="text-center text-xs text-slate-400 py-6 italic border rounded bg-slate-50">Tiada bukti gambar dilampirkan</div>`;
+        gContainer.innerHTML = `<div class="text-center text-xs text-slate-400 py-6 italic border rounded bg-slate-50 flex items-center justify-center w-full h-full">Tiada bukti gambar dilampirkan</div>`;
       }
 
       // Tandatangan Pelapor
@@ -1133,16 +1131,12 @@
         tarikhElem.innerText = "Tarikh Selesai: -";
       }
 
-      // Paparkan Modal Cetak
-      const pModal = document.getElementById('printModal');
-      pModal.classList.remove('hidden');
-      pModal.classList.add('flex');
+      // Buka modal cetakan
+      document.getElementById('printModal').style.display = 'flex';
     }
 
     function closePrintModal() {
-      const pModal = document.getElementById('printModal');
-      pModal.classList.remove('flex');
-      pModal.classList.add('hidden');
+      document.getElementById('printModal').style.display = 'none';
     }
   </script>
 </body>
