@@ -14,19 +14,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* Format Khas Cetakan A4 1 Muka Surat Penuh */
+    /* Format Khas Cetakan A4 1 Muka Surat Penuh (Strict Fit) */
     @page {
       size: A4 portrait;
       margin: 0;
     }
 
-    /* Kertas A4 Fizikal yang Sempurna dan Boleh Diseka Skrol */
+    /* Kertas A4 Fizikal dengan Ketinggian & Padding Optimum */
     .a4-sheet {
       width: 210mm;
-      min-height: 297mm;
       height: 297mm;
+      max-height: 297mm;
       background: white;
-      padding: 10mm 12mm;
+      padding: 6mm 10mm;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
       display: flex;
       flex-direction: column;
@@ -61,7 +61,7 @@
         height: 297mm !important;
         max-height: 297mm !important;
         margin: 0 !important;
-        padding: 8mm 10mm !important;
+        padding: 6mm 10mm !important;
         box-shadow: none !important;
         border: none !important;
       }
@@ -467,7 +467,7 @@
           </div>
         </div>
 
-        <!-- Lampiran Gambar Dinamik (Auto-Stretch Mengisi Ruang Kosong Tengah) -->
+        <!-- Lampiran Gambar Dinamik (Auto-Stretch Mengisi Penuh Ruang Kosong Tengah) -->
         <div class="flex-grow flex flex-col justify-center">
           <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
           <div id="print-gambar" class="w-full flex-grow min-h-[240px]">
