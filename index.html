@@ -20,11 +20,11 @@
       margin: 0;
     }
 
-    /* Kertas A4 Fizikal dengan Skala Dioptimumkan untuk Prebiu Skrin */
+    /* Kertas A4 Fizikal yang Sempurna dan Boleh Diseka Skrol */
     .a4-sheet {
       width: 210mm;
+      min-height: 297mm;
       height: 297mm;
-      max-height: 297mm;
       background: white;
       padding: 10mm 12mm;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
@@ -34,8 +34,6 @@
       box-sizing: border-box;
       margin: 0 auto;
       overflow: hidden;
-      transform: scale(0.75);
-      transform-origin: top center;
     }
 
     @media print {
@@ -66,7 +64,6 @@
         padding: 8mm 10mm !important;
         box-shadow: none !important;
         border: none !important;
-        transform: none !important;
       }
       .no-print {
         display: none !important;
@@ -425,11 +422,11 @@
   </div>
 
   <!-- ==================== MODAL 3: PREBIU CETAKAN A4 (100% TERSEMBUNYI SECARA LALAI) ==================== -->
-  <div id="printModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
+  <div id="printModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-start justify-center p-4 overflow-y-auto no-print py-8">
     <div class="a4-sheet text-slate-900 relative">
       
       <!-- TOP SECTION: HEADER, DATA & GAMBAR -->
-      <div class="space-y-2">
+      <div class="space-y-2 flex flex-col flex-grow">
         <!-- Header Rasmi -->
         <div class="flex items-center space-x-3 border-b-2 border-slate-900 pb-2">
           <img src="logo.png" alt="Logo SMKKA" class="w-14 h-14 object-contain">
@@ -458,22 +455,22 @@
         <div class="space-y-1.5 text-[11px]">
           <div>
             <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[10px]">Penerangan Masalah:</h3>
-            <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[30px] text-[11px]"></p>
+            <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[30px] text-[11.5px]"></p>
           </div>
           <div>
             <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[10px]">Cadangan Baik Pulih / Tindakan:</h3>
-            <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[24px] text-[11px]"></p>
+            <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[24px] text-[11.5px]"></p>
           </div>
           <div>
             <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[10px]">Ulasan Pengesah / Catatan Pembaikan:</h3>
-            <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1.5 min-h-[24px] font-medium text-[11px]"></p>
+            <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1.5 min-h-[24px] font-medium text-[11.5px]"></p>
           </div>
         </div>
 
         <!-- Lampiran Gambar Dinamik (Auto-Stretch Mengisi Ruang Kosong Tengah) -->
-        <div class="flex flex-col justify-center">
+        <div class="flex-grow flex flex-col justify-center">
           <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
-          <div id="print-gambar" class="w-full min-h-[220px]">
+          <div id="print-gambar" class="w-full flex-grow min-h-[240px]">
             <!-- Dijana secara dinamik melalui JS -->
           </div>
         </div>
@@ -1062,20 +1059,20 @@
       document.getElementById('print-cadangan').innerText = item.cadangan || "-";
       document.getElementById('print-ulasan').innerText = item.ulasanPengesah || "-";
 
-      // Susun letak gambar dinamik mengikut bilangan gambar (1, 2, 3 atau 4) dengan saiz BESAR DAN AUTO-STRETCH[cite: 2]
+      // Susun letak gambar dinamik mengikut bilangan gambar (1, 2, 3 atau 4) dengan saiz MAKSIMUM[cite: 2]
       const gContainer = document.getElementById('print-gambar');
       gContainer.innerHTML = "";
       
       if (item.gambar && item.gambar.length > 0) {
         const len = item.gambar.length;
         if (len === 1) {
-          gContainer.className = "flex justify-center items-center w-full h-full min-h-[260px]";
+          gContainer.className = "flex justify-center items-center w-full h-full min-h-[280px]";
           gContainer.innerHTML = `
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else if (len === 2) {
-          gContainer.className = "grid grid-cols-2 gap-3 w-full h-full min-h-[260px]";
+          gContainer.className = "grid grid-cols-2 gap-3 w-full h-full min-h-[280px]";
           item.gambar.forEach(base64 => {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
@@ -1083,7 +1080,7 @@
               </div>`;
           });
         } else if (len === 3) {
-          gContainer.className = "grid grid-cols-2 gap-2 w-full h-full min-h-[260px]";
+          gContainer.className = "grid grid-cols-2 gap-2 w-full h-full min-h-[280px]";
           gContainer.innerHTML = `
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
@@ -1091,12 +1088,12 @@
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[1]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>
-            <div class="col-span-2 w-full h-32 bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
+            <div class="col-span-2 w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[2]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else {
           // 4 Gambar: 2 atas, 2 bawah (Grid 2x2) mengisi penuh ruang[cite: 2]
-          gContainer.className = "grid grid-cols-2 gap-3 w-full h-full min-h-[260px]";
+          gContainer.className = "grid grid-cols-2 gap-3 w-full h-full min-h-[280px]";
           for (let i = 0; i < 4; i++) {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
