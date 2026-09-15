@@ -20,20 +20,20 @@
       margin: 0;
     }
 
-    /* Kertas A4 Fizikal semasa Prebiu di Skrin */
+    /* Kertas A4 Fizikal yang Besar & Jelas pada Skrin Prebiu */
     .a4-sheet {
       width: 210mm;
-      height: 297mm;
+      min-height: 297mm;
       max-height: 297mm;
       background: white;
-      padding: 10mm 12mm;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      padding: 12mm 15mm;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       box-sizing: border-box;
-      overflow: hidden;
       margin: 0 auto;
+      overflow: hidden;
     }
 
     @media print {
@@ -116,7 +116,7 @@
           <h2 class="text-2xl font-bold text-slate-800 flex items-center">
             <i class="fa-solid fa-clipboard-list text-blue-800 mr-3"></i> Borang Laporan Kerosakan Baharu
           </h2>
-          <p class="text-sm text-slate-500 mt-1">Sila isi butiran kerosakan di bawah untuk tindakan pihak sekolah.</p>
+          <p class="text-sm text-slate-500 mt-1">Sila isi butiran kerosakan di bawah untuk tindakan pihak sekolah[cite: 2].</p>
         </div>
 
         <form id="formKerosakan" onsubmit="submitReport(event)" class="space-y-6">
@@ -191,7 +191,7 @@
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
               Muat Naik Gambar Kerosakan <span class="text-red-500">*</span>
-              <span class="text-xs text-slate-500 font-normal lowercase">(wajib 1 keping &amp; maksimum 4)</span>
+              <span class="text-xs text-slate-500 font-normal lowercase">(wajib 1 keping &amp; maksimum 4)[cite: 2]</span>
             </label>
             <input type="file" id="gambarInput" accept="image/*" multiple onchange="handleImageUpload(event, 'new')"
                    class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-100 file:text-blue-800 hover:file:bg-blue-200 cursor-pointer">
@@ -202,7 +202,7 @@
           <div>
             <div class="flex justify-between items-center mb-1">
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Tandatangan Pelapor (Scribble) <span class="text-red-500">*</span>
+                Tandatangan Pelapor (Scribble) <span class="text-red-500">*</span>[cite: 2]
               </label>
               <button type="button" onclick="clearCanvas('signCanvasPelapor')" class="text-xs text-red-600 hover:underline">
                 <i class="fa fa-eraser mr-1"></i> Padam Semula
@@ -230,7 +230,7 @@
             <h2 class="text-2xl font-bold text-slate-800 flex items-center">
               <i class="fa-solid fa-chart-pie text-blue-800 mr-3"></i> Dashboard Pemantauan Kerosakan
             </h2>
-            <p class="text-sm text-slate-500 mt-0.5">Uruskan aduan, kemaskini butiran, sahkan tindakan pembaikan atau cetak laporan terus dari sini.</p>
+            <p class="text-sm text-slate-500 mt-0.5">Uruskan aduan, kemaskini butiran, sahkan tindakan pembaikan atau cetak laporan terus dari sini[cite: 2].</p>
           </div>
           <button onclick="loadReports()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-lg border font-semibold flex items-center">
             <i class="fa fa-rotate mr-2 text-blue-700"></i> Muat Semula Data
@@ -256,7 +256,7 @@
           </div>
         </div>
 
-        <!-- Jadual Laporan Dashboard Lengkap dengan Butang CETAK -->
+        <!-- Jadual Laporan Dashboard Lengkap dengan Butang CETAK[cite: 2] -->
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm text-slate-600">
             <thead class="bg-slate-50 text-slate-700 font-bold border-b text-xs uppercase tracking-wider">
@@ -285,7 +285,7 @@
         <h2 class="text-2xl font-bold text-slate-800 flex items-center border-b border-slate-200 pb-4 mb-2">
           <i class="fa-solid fa-print text-blue-800 mr-3"></i> Arkib Cetakan Laporan Kerosakan
         </h2>
-        <p class="text-sm text-slate-500 mb-6">Pilih mana-mana laporan di bawah untuk menjana lembaran bersaiz A4 1 Muka Surat Penuh siap ulasan pengesah dan tandatangan.</p>
+        <p class="text-sm text-slate-500 mb-6">Pilih mana-mana laporan di bawah untuk menjana lembaran bersaiz A4 1 Muka Surat Penuh siap ulasan pengesah dan tandatangan[cite: 2].</p>
 
         <div id="senaraiCetakanContainer" class="space-y-3">
           <!-- Dijana oleh JS -->
@@ -365,7 +365,7 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 2: TUKAR STATUS & ULASAN PENGESAH ==================== -->
+  <!-- ==================== MODAL 2: TUKAR STATUS & ULASAN PENGESAH[cite: 2] ==================== -->
   <div id="modalStatus" class="fixed inset-0 bg-slate-900/60 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
     <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
@@ -388,11 +388,11 @@
                  class="w-full border rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-600">
         </div>
 
-        <!-- Ulasan Pengesah & Tandatangan Scribble -->
+        <!-- Ulasan Pengesah & Tandatangan Scribble[cite: 2] -->
         <div id="pengesahSignatureBlock" class="space-y-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
-              Ulasan Pengesah / Tindakan Pembaikan <span class="text-red-500">*</span>
+              Ulasan Pengesah / Tindakan Pembaikan <span class="text-red-500">*</span>[cite: 2]
             </label>
             <textarea id="statusUlasan" rows="2" placeholder="cth: Kerosakan telah dibaiki sepenuhnya oleh kontraktor."
                       class="w-full border rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-600"></textarea>
@@ -401,7 +401,7 @@
           <div>
             <div class="flex justify-between items-center mb-1">
               <label class="block text-xs font-bold text-slate-700 uppercase">
-                Tandatangan Pengesah Selesai (Scribble) <span class="text-red-500">*</span>
+                Tandatangan Pengesah Selesai (Scribble) <span class="text-red-500">*</span>[cite: 2]
               </label>
               <button type="button" onclick="clearCanvas('signCanvasPengesah')" class="text-xs text-red-600 hover:underline">
                 Padam
@@ -451,7 +451,7 @@
           <div><span class="font-bold text-slate-600">Status Semasa:</span> <span id="print-status" class="font-bold"></span></div>
         </div>
 
-        <!-- Penerangan, Cadangan & Ulasan Pengesah -->
+        <!-- Penerangan, Cadangan & Ulasan Pengesah[cite: 2] -->
         <div class="space-y-1.5 text-[11px]">
           <div>
             <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[10px]">Penerangan Masalah:</h3>
@@ -462,21 +462,21 @@
             <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[24px] text-[11px]"></p>
           </div>
           <div>
-            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[10px]">Ulasan Pengesah / Catatan Pembaikan:</h3>
+            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[10px]">Ulasan Pengesah / Catatan Pembaikan:[cite: 2]</h3>
             <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1.5 min-h-[24px] font-medium text-[11px]"></p>
           </div>
         </div>
 
-        <!-- Lampiran Gambar Dinamik (Susunan Ikut Bilangan: 1, 2, 3, 4) -->
+        <!-- Lampiran Gambar Dinamik (Saiz Besar & Dinamik 1, 2, 3, 4)[cite: 2] -->
         <div>
-          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
+          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Bukti Gambar Kerosakan (Nisbah Sebenar):[cite: 2]</h3>
           <div id="print-gambar" class="w-full">
             <!-- Dijana secara dinamik melalui JS -->
           </div>
         </div>
       </div>
 
-      <!-- BOTTOM SECTION: TANDATANGAN & PENGESAHAN (LOCKED FOOTER DI BAWAH A4) -->
+      <!-- BOTTOM SECTION: TANDATANGAN & PENGESAHAN (LOCKED FOOTER DI BAWAH A4)[cite: 2] -->
       <div class="border-t-2 border-slate-900 pt-2 mt-2">
         <div class="grid grid-cols-2 gap-4 text-[11px]">
           <!-- Ruangan 1: Pelapor -->
@@ -491,7 +491,7 @@
             </div>
           </div>
 
-          <!-- Ruangan 2: Pengesah Selesai -->
+          <!-- Ruangan 2: Pengesah Selesai[cite: 2] -->
           <div class="border border-slate-300 rounded p-2 text-center bg-slate-50/50 flex flex-col justify-between h-28">
             <p class="font-bold uppercase tracking-wider text-slate-700 text-[9.5px]">Pengesah Status Selesai:</p>
             <div class="flex items-center justify-center my-0.5 h-12">
@@ -779,7 +779,7 @@
       }
     }
 
-    // 3. Papar Dashboard dengan Butang Kemaskini, Status & CETAK
+    // 3. Papar Dashboard dengan Butang Kemaskini, Status & CETAK[cite: 2]
     function renderDashboard(data) {
       const tbody = document.getElementById('dashboardTableBody');
       tbody.innerHTML = "";
@@ -919,7 +919,7 @@
       }
     }
 
-    // 5. Modal Ubah Status, Ulasan & Scribble Pengesah
+    // 5. Modal Ubah Status, Ulasan & Scribble Pengesah[cite: 2]
     function openStatusModal(id, currentStatus) {
       const nextStatus = (currentStatus === "Selesai") ? "Belum Selesai" : "Selesai";
       const item = reportsCache.find(r => r.id === id);
@@ -1010,7 +1010,7 @@
       }
     }
 
-    // 6. Senarai & Cetakan A4 1 Muka Surat Penuh
+    // 6. Senarai & Cetakan A4 1 Muka Surat Penuh[cite: 2]
     function renderCetakanList() {
       const container = document.getElementById('senaraiCetakanContainer');
       container.innerHTML = "";
@@ -1059,7 +1059,7 @@
       document.getElementById('print-cadangan').innerText = item.cadangan || "-";
       document.getElementById('print-ulasan').innerText = item.ulasanPengesah || "-";
 
-      // Susun letak gambar dinamik mengikut bilangan gambar (1, 2, 3 atau 4) dengan saiz besar
+      // Susun letak gambar dinamik mengikut bilangan gambar (1, 2, 3 atau 4) dengan saiz besar[cite: 2]
       const gContainer = document.getElementById('print-gambar');
       gContainer.innerHTML = "";
       
@@ -1092,7 +1092,7 @@
               <img src="${item.gambar[2]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else {
-          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2) dengan ketinggian besar
+          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2) dengan ketinggian besar[cite: 2]
           gContainer.className = "grid grid-cols-2 gap-3 h-64";
           for (let i = 0; i < 4; i++) {
             gContainer.innerHTML += `
@@ -1115,7 +1115,7 @@
       }
       document.getElementById('print-sign-pelapor-name').innerText = item.namaPelapor;
 
-      // Pengesah Selesai
+      // Pengesah Selesai[cite: 2]
       const imgPengesah = document.getElementById('print-sign-pengesah');
       const nonePengesah = document.getElementById('print-sign-pengesah-none');
       const roleElem = document.getElementById('print-pengesah-role');
