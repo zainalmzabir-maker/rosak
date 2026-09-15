@@ -421,7 +421,7 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 3: PREBIU CETAKAN A4 (TERSEMBUNYI SECARA LALAI) ==================== -->
+  <!-- ==================== MODAL 3: PREBIU CETAKAN A4 (100% TERSEMBUNYI SECARA LALAI) ==================== -->
   <div id="printModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
     <div class="a4-sheet text-slate-900 relative">
       
@@ -1059,20 +1059,20 @@
       document.getElementById('print-cadangan').innerText = item.cadangan || "-";
       document.getElementById('print-ulasan').innerText = item.ulasanPengesah || "-";
 
-      // Susun letak gambar dinamik mengikut bilangan gambar (1, 2, 3 atau 4)
+      // Susun letak gambar dinamik mengikut bilangan gambar (1, 2, 3 atau 4) dengan saiz besar
       const gContainer = document.getElementById('print-gambar');
       gContainer.innerHTML = "";
       
       if (item.gambar && item.gambar.length > 0) {
         const len = item.gambar.length;
         if (len === 1) {
-          gContainer.className = "flex justify-center items-center h-48";
+          gContainer.className = "flex justify-center items-center h-64";
           gContainer.innerHTML = `
-            <div class="w-3/5 h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
+            <div class="w-3/4 h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else if (len === 2) {
-          gContainer.className = "grid grid-cols-2 gap-3 h-48";
+          gContainer.className = "grid grid-cols-2 gap-3 h-64";
           item.gambar.forEach(base64 => {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
@@ -1080,7 +1080,7 @@
               </div>`;
           });
         } else if (len === 3) {
-          gContainer.className = "grid grid-cols-2 gap-2 h-48";
+          gContainer.className = "grid grid-cols-2 gap-2 h-64";
           gContainer.innerHTML = `
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
@@ -1088,12 +1088,12 @@
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[1]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>
-            <div class="col-span-2 w-full h-22 bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
+            <div class="col-span-2 w-full h-28 bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[2]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else {
-          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2)
-          gContainer.className = "grid grid-cols-2 gap-2 h-48";
+          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2) dengan ketinggian besar
+          gContainer.className = "grid grid-cols-2 gap-3 h-64";
           for (let i = 0; i < 4; i++) {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
