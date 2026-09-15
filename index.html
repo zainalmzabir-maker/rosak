@@ -14,13 +14,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* Format Khas Cetakan A4 1 Muka Surat Penuh */
     @page {
       size: A4 portrait;
       margin: 0;
     }
 
-    /* Kertas A4 Fizikal dengan Fleksibiliti Penuh */
+    /* Kertas A4 Fizikal Bersaiz Tepat & Kemas */
     .a4-sheet {
       width: 210mm;
       height: 297mm;
@@ -432,17 +431,17 @@
           <img src="logo.png" alt="Logo SMKKA" class="w-12 h-12 object-contain">
           <div class="flex-1 text-center">
             <h1 class="text-sm font-black uppercase tracking-wider text-slate-900">SMK KAMARUL ARIFFIN</h1>
-            <p class="text-[9.5px] font-bold uppercase text-slate-700 tracking-wide">Borang Laporan &amp; Pengesahan Kerosakan Fizikal Sekolah</p>
-            <p class="text-[8.5px] text-slate-500 italic">Dokumen Pengurusan Aset &amp; Penyelenggaraan Fasiliti</p>
+            <p class="text-[9px] font-bold uppercase text-slate-700 tracking-wide">Borang Laporan &amp; Pengesahan Kerosakan Fizikal Sekolah</p>
+            <p class="text-[8px] text-slate-500 italic">Dokumen Pengurusan Aset &amp; Penyelenggaraan Fasiliti</p>
           </div>
           <div class="text-right border-l pl-3 border-slate-300">
-            <span class="text-[8px] font-bold text-slate-500 block uppercase">No. Rujukan:</span>
+            <span class="text-[7.5px] font-bold text-slate-500 block uppercase">No. Rujukan:</span>
             <span id="print-id" class="text-[10px] font-mono font-bold text-blue-900">REP-00000</span>
           </div>
         </div>
 
         <!-- Ringkasan Data -->
-        <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10.5px] border border-slate-300 rounded p-2 bg-slate-50/70">
+        <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] border border-slate-300 rounded p-2 bg-slate-50/70">
           <div><span class="font-bold text-slate-600">Tarikh &amp; Masa Aduan:</span> <span id="print-tarikh" class="font-medium"></span></div>
           <div><span class="font-bold text-slate-600">Nama Pelapor:</span> <span id="print-pelapor" class="font-medium uppercase"></span></div>
           <div><span class="font-bold text-slate-600">Blok / Lokasi:</span> <span id="print-lokasi" class="font-medium"></span></div>
@@ -452,25 +451,25 @@
         </div>
 
         <!-- Penerangan, Cadangan & Ulasan Pengesah -->
-        <div class="space-y-1 text-[10.5px]">
+        <div class="space-y-1 text-[10px]">
           <div>
-            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9.5px]">Penerangan Masalah:</h3>
-            <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1 min-h-[26px] text-[10.5px]"></p>
+            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9px]">Penerangan Masalah:</h3>
+            <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1 min-h-[24px] text-[10px]"></p>
           </div>
           <div>
-            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9.5px]">Cadangan Baik Pulih / Tindakan:</h3>
-            <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1 min-h-[22px] text-[10.5px]"></p>
+            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9px]">Cadangan Baik Pulih / Tindakan:</h3>
+            <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1 min-h-[20px] text-[10px]"></p>
           </div>
           <div>
-            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[9.5px]">Ulasan Pengesah / Catatan Pembaikan:</h3>
-            <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1 min-h-[22px] font-medium text-[10.5px]"></p>
+            <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[9px]">Ulasan Pengesah / Catatan Pembaikan:</h3>
+            <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1 min-h-[20px] font-medium text-[10px]"></p>
           </div>
         </div>
 
         <!-- Lampiran Gambar Dinamik (Auto-Stretch Mengisi Penuh Ruang Kosong Tengah) -->
         <div class="flex-grow flex flex-col justify-center">
-          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[9.5px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
-          <div id="print-gambar" class="w-full flex-grow min-h-[200px]">
+          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[9px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
+          <div id="print-gambar" class="w-full flex-grow min-h-[190px]">
             <!-- Dijana secara dinamik melalui JS -->
           </div>
         </div>
@@ -478,41 +477,41 @@
 
       <!-- BOTTOM SECTION: TANDATANGAN & PENGESAHAN (LOCKED FOOTER DI BAWAH A4) -->
       <div class="border-t-2 border-slate-900 pt-2 mt-1">
-        <div class="grid grid-cols-2 gap-4 text-[10.5px]">
+        <div class="grid grid-cols-2 gap-4 text-[10px]">
           <!-- Ruangan 1: Pelapor -->
-          <div class="border border-slate-300 rounded p-2 text-center bg-slate-50/50 flex flex-col justify-between h-24">
-            <p class="font-bold uppercase tracking-wider text-slate-700 text-[9px]">Disediakan Oleh (Pelapor):</p>
-            <div class="flex items-center justify-center my-0.5 h-10">
-              <img id="print-sign-pelapor" class="max-h-10 max-w-full object-contain mx-auto" alt="Tandatangan Pelapor">
+          <div class="border border-slate-300 rounded p-1.5 text-center bg-slate-50/50 flex flex-col justify-between h-22">
+            <p class="font-bold uppercase tracking-wider text-slate-700 text-[8.5px]">Disediakan Oleh (Pelapor):</p>
+            <div class="flex items-center justify-center my-0.5 h-9">
+              <img id="print-sign-pelapor" class="max-h-9 max-w-full object-contain mx-auto" alt="Tandatangan Pelapor">
             </div>
             <div>
               <div class="border-b border-slate-400 w-3/4 mx-auto mb-0.5"></div>
-              <p id="print-sign-pelapor-name" class="font-semibold text-slate-800 uppercase text-[9px]"></p>
+              <p id="print-sign-pelapor-name" class="font-semibold text-slate-800 uppercase text-[8.5px]"></p>
             </div>
           </div>
 
           <!-- Ruangan 2: Pengesah Selesai -->
-          <div class="border border-slate-300 rounded p-2 text-center bg-slate-50/50 flex flex-col justify-between h-24">
-            <p class="font-bold uppercase tracking-wider text-slate-700 text-[9px]">Pengesah Status Selesai:</p>
-            <div class="flex items-center justify-center my-0.5 h-10">
-              <img id="print-sign-pengesah" class="max-h-10 max-w-full object-contain mx-auto" alt="Tandatangan Pengesah">
-              <span id="print-sign-pengesah-none" class="text-[9.5px] text-slate-400 italic">Belum Selesai / Disahkan</span>
+          <div class="border border-slate-300 rounded p-1.5 text-center bg-slate-50/50 flex flex-col justify-between h-22">
+            <p class="font-bold uppercase tracking-wider text-slate-700 text-[8.5px]">Pengesah Status Selesai:</p>
+            <div class="flex items-center justify-center my-0.5 h-9">
+              <img id="print-sign-pengesah" class="max-h-9 max-w-full object-contain mx-auto" alt="Tandatangan Pengesah">
+              <span id="print-sign-pengesah-none" class="text-[9px] text-slate-400 italic">Belum Selesai / Disahkan</span>
             </div>
             <div>
               <div class="border-b border-slate-400 w-3/4 mx-auto mb-0.5"></div>
-              <p id="print-pengesah-role" class="font-bold text-slate-800 uppercase text-[9px]">-</p>
-              <p id="print-pengesah-tarikh" class="text-[8px] text-slate-500">Tarikh Selesai: -</p>
+              <p id="print-pengesah-role" class="font-bold text-slate-800 uppercase text-[8.5px]">-</p>
+              <p id="print-pengesah-tarikh" class="text-[7.5px] text-slate-500">Tarikh Selesai: -</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Butang Kawalan Modal (Hilang Semasa Cetak) -->
-      <div class="mt-2 flex justify-end space-x-3 no-print border-t pt-1.5">
-        <button onclick="window.print()" class="px-5 py-2 bg-blue-900 text-white text-xs font-bold rounded shadow hover:bg-blue-800">
+      <div class="mt-1.5 flex justify-end space-x-3 no-print border-t pt-1">
+        <button onclick="window.print()" class="px-4 py-1.5 bg-blue-900 text-white text-xs font-bold rounded shadow hover:bg-blue-800">
           <i class="fa fa-print mr-1.5"></i> Cetak Dokumen A4 Penuh
         </button>
-        <button onclick="closePrintModal()" class="px-4 py-2 bg-slate-300 text-slate-700 text-xs font-bold rounded hover:bg-slate-400">
+        <button onclick="closePrintModal()" class="px-3 py-1.5 bg-slate-300 text-slate-700 text-xs font-bold rounded hover:bg-slate-400">
           Tutup Prebiu
         </button>
       </div>
@@ -1092,7 +1091,7 @@
               <img src="${item.gambar[2]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else {
-          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2) memenuhi penuh ruang
+          // 4 Gambar: 2 atas, 2 bawah (Grid 2x2) mengisi penuh ruang
           gContainer.className = "grid grid-cols-2 gap-2.5 w-full h-full";
           for (let i = 0; i < 4; i++) {
             gContainer.innerHTML += `
