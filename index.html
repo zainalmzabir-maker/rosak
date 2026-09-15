@@ -14,10 +14,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* Format Cetakan A4 1 Muka Surat Penuh (Auto-Fit Layout) */
+    /* Format Cetakan A4 Sepenuhnya 1 Muka Surat (Locked Height & Flex Layout) */
     @page {
       size: A4 portrait;
-      margin: 5mm;
+      margin: 0;
     }
 
     @media print {
@@ -32,10 +32,10 @@
         left: 0 !important;
         top: 0 !important;
         width: 210mm !important;
-        height: 287mm !important;
-        max-height: 287mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
         margin: 0 !important;
-        padding: 4mm 6mm !important;
+        padding: 8mm 12mm !important;
         background: white !important;
         box-shadow: none !important;
         border: none !important;
@@ -401,58 +401,60 @@
     </div>
   </div>
 
-  <!-- ==================== TEMPLATE CETAKAN (A4 1 MUKA SURAT PENUH AUTO-FIT) ==================== -->
+  <!-- ==================== TEMPLATE CETAKAN A4 (FULL PAGE FLEXIBLE LAYOUT) ==================== -->
   <div id="printArea" class="hidden bg-white max-w-[210mm] mx-auto p-4 border border-slate-300 shadow-md text-slate-900">
-    <!-- Header Rasmi -->
-    <div class="flex items-center space-x-3 border-b-2 border-slate-900 pb-2 mb-2">
-      <img src="logo.png" alt="Logo SMKKA" class="w-14 h-14 object-contain">
-      <div class="flex-1 text-center">
-        <h1 class="text-base font-black uppercase tracking-wider text-slate-900">SMK KAMARUL ARIFFIN</h1>
-        <p class="text-[10px] font-bold uppercase text-slate-700 tracking-wide">Borang Laporan &amp; Pengesahan Kerosakan Fizikal Sekolah</p>
-        <p class="text-[9px] text-slate-500 italic">Dokumen Pengurusan Aset &amp; Penyelenggaraan Fasiliti</p>
+    <div>
+      <!-- Header Rasmi -->
+      <div class="flex items-center space-x-3 border-b-2 border-slate-900 pb-2 mb-2">
+        <img src="logo.png" alt="Logo SMKKA" class="w-14 h-14 object-contain">
+        <div class="flex-1 text-center">
+          <h1 class="text-base font-black uppercase tracking-wider text-slate-900">SMK KAMARUL ARIFFIN</h1>
+          <p class="text-[10px] font-bold uppercase text-slate-700 tracking-wide">Borang Laporan &amp; Pengesahan Kerosakan Fizikal Sekolah</p>
+          <p class="text-[9px] text-slate-500 italic">Dokumen Pengurusan Aset &amp; Penyelenggaraan Fasiliti</p>
+        </div>
+        <div class="text-right border-l pl-3 border-slate-300">
+          <span class="text-[8px] font-bold text-slate-500 block uppercase">No. Rujukan:</span>
+          <span id="print-id" class="text-[11px] font-mono font-bold text-blue-900">REP-00000</span>
+        </div>
       </div>
-      <div class="text-right border-l pl-3 border-slate-300">
-        <span class="text-[8px] font-bold text-slate-500 block uppercase">No. Rujukan:</span>
-        <span id="print-id" class="text-[11px] font-mono font-bold text-blue-900">REP-00000</span>
+
+      <!-- Ringkasan Data -->
+      <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10.5px] border border-slate-300 rounded p-2 mb-2 bg-slate-50/70">
+        <div><span class="font-bold text-slate-600">Tarikh &amp; Masa Aduan:</span> <span id="print-tarikh" class="font-medium"></span></div>
+        <div><span class="font-bold text-slate-600">Nama Pelapor:</span> <span id="print-pelapor" class="font-medium uppercase"></span></div>
+        <div><span class="font-bold text-slate-600">Blok / Lokasi:</span> <span id="print-lokasi" class="font-medium"></span></div>
+        <div><span class="font-bold text-slate-600">Jenis Kerosakan:</span> <span id="print-jenis" class="font-medium"></span></div>
+        <div><span class="font-bold text-slate-600">Tahap Kerosakan:</span> <span id="print-tahap" class="font-bold"></span></div>
+        <div><span class="font-bold text-slate-600">Status Semasa:</span> <span id="print-status" class="font-bold"></span></div>
+      </div>
+
+      <!-- Penerangan, Cadangan & Ulasan Pengesah[cite: 2] -->
+      <div class="space-y-1.5 mb-2 text-[10.5px]">
+        <div>
+          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9.5px]">Penerangan Masalah:</h3>
+          <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[30px]"></p>
+        </div>
+        <div>
+          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9.5px]">Cadangan Baik Pulih / Tindakan:</h3>
+          <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[22px]"></p>
+        </div>
+        <div>
+          <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[9.5px]">Ulasan Pengesah / Catatan Pembaikan:[cite: 2]</h3>
+          <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1.5 min-h-[22px] font-medium"></p>
+        </div>
+      </div>
+
+      <!-- Lampiran Gambar (Nisbah Asal & Kotak Responsif Penuh)[cite: 2] -->
+      <div class="mb-2">
+        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[9.5px]">Bukti Gambar Kerosakan (Nisbah Sebenar):[cite: 2]</h3>
+        <div id="print-gambar" class="grid grid-cols-4 gap-2 h-32">
+          <!-- Render melalui JS -->
+        </div>
       </div>
     </div>
 
-    <!-- Ringkasan Data -->
-    <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10.5px] border border-slate-300 rounded p-2 mb-2 bg-slate-50/70">
-      <div><span class="font-bold text-slate-600">Tarikh &amp; Masa Aduan:</span> <span id="print-tarikh" class="font-medium"></span></div>
-      <div><span class="font-bold text-slate-600">Nama Pelapor:</span> <span id="print-pelapor" class="font-medium uppercase"></span></div>
-      <div><span class="font-bold text-slate-600">Blok / Lokasi:</span> <span id="print-lokasi" class="font-medium"></span></div>
-      <div><span class="font-bold text-slate-600">Jenis Kerosakan:</span> <span id="print-jenis" class="font-medium"></span></div>
-      <div><span class="font-bold text-slate-600">Tahap Kerosakan:</span> <span id="print-tahap" class="font-bold"></span></div>
-      <div><span class="font-bold text-slate-600">Status Semasa:</span> <span id="print-status" class="font-bold"></span></div>
-    </div>
-
-    <!-- Penerangan, Cadangan & Ulasan Pengesah[cite: 2] -->
-    <div class="space-y-1.5 mb-2 text-[10.5px]">
-      <div>
-        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9.5px]">Penerangan Masalah:</h3>
-        <p id="print-penerangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[30px]"></p>
-      </div>
-      <div>
-        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-slate-700 text-[9.5px]">Cadangan Baik Pulih / Tindakan:</h3>
-        <p id="print-cadangan" class="text-slate-800 text-justify bg-white border border-slate-200 rounded p-1.5 min-h-[22px]"></p>
-      </div>
-      <div>
-        <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-0.5 uppercase tracking-wider text-blue-900 text-[9.5px]">Ulasan Pengesah / Catatan Pembaikan:[cite: 2]</h3>
-        <p id="print-ulasan" class="text-slate-800 text-justify bg-blue-50/40 border border-blue-200 rounded p-1.5 min-h-[22px] font-medium"></p>
-      </div>
-    </div>
-
-    <!-- Lampiran Gambar (Nisbah Asal & Kotak Responsif Penuh)[cite: 2] -->
-    <div class="mb-2">
-      <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[9.5px]">Bukti Gambar Kerosakan (Nisbah Sebenar):[cite: 2]</h3>
-      <div id="print-gambar" class="grid grid-cols-4 gap-2 h-32">
-        <!-- Render melalui JS -->
-      </div>
-    </div>
-
-    <!-- Ruang Pengesahan 2 Pihak: Pelapor & Pengesah Selesai[cite: 2] -->
-    <div class="border-t-2 border-slate-900 pt-2 mt-auto">
+    <!-- Ruang Pengesahan Bawah (Locked Footer Layout)[cite: 2] -->
+    <div class="border-t-2 border-slate-900 pt-2 mt-2">
       <div class="grid grid-cols-2 gap-4 text-[10.5px]">
         <!-- Ruangan 1: Pelapor -->
         <div class="border border-slate-300 rounded p-2 text-center bg-slate-50/50 flex flex-col justify-between h-28">
@@ -466,7 +468,7 @@
           </div>
         </div>
 
-        <!-- Ruangan 2: Pengesah Status Selesai[cite: 2] -->
+        <!-- Ruangan 2: Pengesah Selesai[cite: 2] -->
         <div class="border border-slate-300 rounded p-2 text-center bg-slate-50/50 flex flex-col justify-between h-28">
           <p class="font-bold uppercase tracking-wider text-slate-700 text-[9.5px]">Pengesah Status Selesai:</p>
           <div class="flex items-center justify-center my-0.5 h-12">
@@ -1050,7 +1052,7 @@
       }
       document.getElementById('print-sign-pelapor-name').innerText = item.namaPelapor;
 
-      // Pengesah Selesai
+      // Pengesah Selesai[cite: 2]
       const imgPengesah = document.getElementById('print-sign-pengesah');
       const nonePengesah = document.getElementById('print-sign-pengesah-none');
       const roleElem = document.getElementById('print-pengesah-role');
