@@ -296,7 +296,7 @@
   </div>
 
   <!-- ==================== MODAL 1: KEMAS KINI LAPORAN SEDIA ADA ==================== -->
-  <div id="modalEdit" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center p-4 overflow-y-auto no-print">
+  <div id="modalEdit" class="fixed inset-0 bg-slate-900/60 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <div>
@@ -366,7 +366,7 @@
   </div>
 
   <!-- ==================== MODAL 2: TUKAR STATUS & ULASAN PENGESAH ==================== -->
-  <div id="modalStatus" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center p-4 overflow-y-auto no-print">
+  <div id="modalStatus" class="fixed inset-0 bg-slate-900/60 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
     <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
         <h3 class="text-base font-bold text-slate-800">Pengesahan Status Kerosakan</h3>
@@ -422,7 +422,7 @@
   </div>
 
   <!-- ==================== MODAL 3: PREBIU CETAKAN A4 (TERSEMBUNYI SECARA LALAI) ==================== -->
-  <div id="printModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4 overflow-y-auto no-print">
+  <div id="printModal" class="fixed inset-0 bg-slate-950/80 z-50 hidden items-center justify-center p-4 overflow-y-auto no-print">
     <div class="a4-sheet text-slate-900 relative">
       
       <!-- TOP SECTION: HEADER, DATA & GAMBAR -->
@@ -467,7 +467,7 @@
           </div>
         </div>
 
-        <!-- Lampiran Gambar Dinamik (Susunan Ikut Bilangan Gambar: 1, 2, 3, atau 4) -->
+        <!-- Lampiran Gambar Dinamik (Susunan Ikut Bilangan: 1, 2, 3, 4) -->
         <div>
           <h3 class="font-bold border-b border-slate-300 pb-0.5 mb-1 uppercase tracking-wider text-slate-700 text-[10px]">Bukti Gambar Kerosakan (Nisbah Sebenar):</h3>
           <div id="print-gambar" class="w-full">
@@ -872,11 +872,15 @@
         });
       }
 
-      document.getElementById('modalEdit').classList.remove('hidden');
+      const mEdit = document.getElementById('modalEdit');
+      mEdit.classList.remove('hidden');
+      mEdit.classList.add('flex');
     }
 
     function closeEditModal() {
-      document.getElementById('modalEdit').classList.add('hidden');
+      const mEdit = document.getElementById('modalEdit');
+      mEdit.classList.remove('flex');
+      mEdit.classList.add('hidden');
     }
 
     async function submitEditReport(e) {
@@ -941,11 +945,15 @@
       }
 
       document.getElementById('statusPassword').value = "";
-      document.getElementById('modalStatus').classList.remove('hidden');
+      const mStatus = document.getElementById('modalStatus');
+      mStatus.classList.remove('hidden');
+      mStatus.classList.add('flex');
     }
 
     function closeStatusModal() {
-      document.getElementById('modalStatus').classList.add('hidden');
+      const mStatus = document.getElementById('modalStatus');
+      mStatus.classList.remove('flex');
+      mStatus.classList.add('hidden');
     }
 
     async function submitStatusChange(e) {
@@ -1058,13 +1066,13 @@
       if (item.gambar && item.gambar.length > 0) {
         const len = item.gambar.length;
         if (len === 1) {
-          gContainer.className = "flex justify-center items-center h-44";
+          gContainer.className = "flex justify-center items-center h-48";
           gContainer.innerHTML = `
-            <div class="w-2/3 h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
+            <div class="w-3/5 h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else if (len === 2) {
-          gContainer.className = "grid grid-cols-2 gap-3 h-44";
+          gContainer.className = "grid grid-cols-2 gap-3 h-48";
           item.gambar.forEach(base64 => {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
@@ -1072,7 +1080,7 @@
               </div>`;
           });
         } else if (len === 3) {
-          gContainer.className = "grid grid-cols-2 gap-2 h-44";
+          gContainer.className = "grid grid-cols-2 gap-2 h-48";
           gContainer.innerHTML = `
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[0]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
@@ -1080,12 +1088,12 @@
             <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[1]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>
-            <div class="col-span-2 w-full h-20 bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
+            <div class="col-span-2 w-full h-22 bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
               <img src="${item.gambar[2]}" class="max-w-full max-h-full object-contain mx-auto" alt="Bukti Kerosakan">
             </div>`;
         } else {
           // 4 Gambar: 2 atas, 2 bawah (Grid 2x2)
-          gContainer.className = "grid grid-cols-2 gap-2 h-44";
+          gContainer.className = "grid grid-cols-2 gap-2 h-48";
           for (let i = 0; i < 4; i++) {
             gContainer.innerHTML += `
               <div class="w-full h-full bg-slate-50 border border-slate-300 rounded overflow-hidden flex items-center justify-center p-1">
@@ -1127,11 +1135,15 @@
       }
 
       // Paparkan Modal Cetak
-      document.getElementById('printModal').classList.remove('hidden');
+      const pModal = document.getElementById('printModal');
+      pModal.classList.remove('hidden');
+      pModal.classList.add('flex');
     }
 
     function closePrintModal() {
-      document.getElementById('printModal').classList.add('hidden');
+      const pModal = document.getElementById('printModal');
+      pModal.classList.remove('flex');
+      pModal.classList.add('hidden');
     }
   </script>
 </body>
